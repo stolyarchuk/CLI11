@@ -80,6 +80,8 @@ endif()
 option(CLI11_WARNINGS_AS_ERRORS "Turn all warnings into errors (for CI)")
 option(CLI11_SINGLE_FILE "Generate a single header file")
 option(CLI11_PRECOMPILED "Generate a precompiled static library instead of a header-only" OFF)
+option(CLI11_INSTALL "Install the CLI11 folder to include during install process" ON)
+
 cmake_dependent_option(CLI11_SANITIZERS "Download the sanitizers CMake config" OFF
                        "NOT CMAKE_VERSION VERSION_LESS 3.11" OFF)
 
@@ -97,8 +99,6 @@ cmake_dependent_option(CLI11_BUILD_EXAMPLES_JSON "Build CLI11 json example" OFF
 cmake_dependent_option(CLI11_SINGLE_FILE_TESTS "Duplicate all the tests for a single file build"
                        OFF "BUILD_TESTING;CLI11_SINGLE_FILE" OFF)
 
-cmake_dependent_option(CLI11_INSTALL "Install the CLI11 folder to include during install process"
-                       ON "CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME" OFF)
 
 cmake_dependent_option(
   CLI11_FORCE_LIBCXX "Force clang to use libc++ instead of libstdc++ (Linux only)" OFF
@@ -155,14 +155,14 @@ if(CLI11_INSTALL)
 
   # Make version available in the install
   install(FILES "${PROJECT_BINARY_DIR}/CLI11ConfigVersion.cmake"
-          DESTINATION "${CMAKE_INSTALL_DATADIR}/cmake/CLI11")
+          DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/CLI11")
 
   # Install the export target as a file
   install(
     EXPORT CLI11Targets
     FILE CLI11Config.cmake
     NAMESPACE CLI11::
-    DESTINATION "${CMAKE_INSTALL_DATADIR}/cmake/CLI11")
+    DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/CLI11")
 
   # Use find_package on the installed package
   export(
